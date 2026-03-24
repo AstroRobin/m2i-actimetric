@@ -23,6 +23,9 @@ log.txt
 # RStudio files
 .Rproj.user/
 
+# Quarto files
+settings.json
+
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf

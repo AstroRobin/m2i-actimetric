@@ -22,7 +22,7 @@ library(tidyverse)  # `install.packages('tidyverse')` if not already installed
 
 # ---- SETUP ---- #
 # Define all the information needed to run the script
-
+setwd("C:/Users/RvandeMeeberg/OneDrive - The Kids Research Institute Australia/Documents/Projects/BSTAT-1188 Emily Davey/data-raw/Actigraph")  # Set your working directory as the base point of your analysis
 study_name = "M2I"  # used for bookkeeping of outputs. Might be useful if you want to keep separate versions of results (e.g. M2I_jan2026, M2I_noCP, etc.). Using the same study_name (i.e. M2I) will just overwrite the previous results
 input_dir = 'data-raw'  # location of .gt3x files
 output_dir = 'Processed_Data'  # location of where to store outputs
@@ -39,6 +39,23 @@ log_message <- function(..., file = "log.txt", append = TRUE) {
   clean_msg <- gsub("\x1B\\[[0-9;]*[A-Za-z]", "", msg) # Strip ANSI colour codes for file
   
   cat(clean_msg, file = file, append = append)
+}
+
+# Check if necessary directories exist in working directory
+if (!file.exists(input_dir)) {
+  message("\033[31m", "[ERROR] The input directory '", input_dir, "' does not exist in your current working directory:\n  '", getwd(), "'.", "\033[0m")
+}
+
+if (!file.exists(output_dir)) {
+  message("\033[33m", "[WARNING] The output directory '", output_dir, "' does not exist in your current working directory:\n", "\033[0m", "  '", getwd(), "'")
+  response <- readline(prompt = paste0("\033[35m", "\nWould you like to create it now? (y/n): ", "\033[0m"))
+  
+  if (tolower(response) %in% c("y", "yes")) {
+    dir.create(output_dir)
+    message("\033[32m", "[INFO] Directory created: '", output_dir, "'", "\033[0m")
+  } else {
+    message("\033[38m", "[INFO] Directory not created.", "\033[0m")
+  }
 }
 
 logfile <- file.path(output_dir, "log.txt")
